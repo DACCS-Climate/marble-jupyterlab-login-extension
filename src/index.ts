@@ -11,11 +11,16 @@ import {
 
 import {
   ICommandPalette,
-  //ToolbarButton,
+  //ToolbarButton
   //WidgetTracker,
   //IToolbarWidgetRegistry,
   //MainAreaWidget
 } from '@jupyterlab/apputils';
+/*
+import {
+    PartialJSONObject
+} from '@lumino/coreutils';
+*/
 /*
 import {
   Widget
@@ -25,25 +30,24 @@ import {
 import {
   DocumentRegistry
 } from "@jupyterlab/docregistry";
+
+import {
+  IDisposable
+} from "@lumino/disposable";
 */
 import {
     INotebookModel,
     INotebookTracker,
     Notebook,
     // NotebookPanel
-    NotebookActions, NotebookModel,
+    NotebookActions,
+    //NotebookModel,
     NotebookPanel
-} from "@jupyterlab/notebook";
+} from '@jupyterlab/notebook';
 
 import {
     IDocumentManager
-} from "@jupyterlab/docmanager"
-/*
-import {
-  IDisposable
-} from "@lumino/disposable";
-
-*/
+} from '@jupyterlab/docmanager'
 /*
 import {
     CodeCell
@@ -65,6 +69,29 @@ interface sessionResponse {
   url: string;
 };
 */
+/*
+interface sessioniCellContent {
+    notebook: Notebook;
+    context: DocumentRegistry.IContext<INotebookModel>;
+    docManager: IDocumentManager;
+};
+*/
+/*
+export interface INotebookContent extends PartialJSONObject {
+
+  nbformat: Array[{
+      cellType: string,
+      executionCount: null,
+      cellID: string,
+      cellMetadata: object,
+      cellOutputs: any,
+      cellSource: any
+  }];
+  //cells: ICell[];
+
+}
+*/
+
 
 /*
 class SessionCodeCell extends CodeCell{
@@ -135,6 +162,7 @@ class ToolbarExtension implements DocumentRegistry.IWidgetExtension<NotebookPane
        label: 'Get Session',
        onClick: () => {
          alert('Button clicked')
+           //console.log(notebookTracker.currentWidget)
         //this.addCell()
 
         }
@@ -150,21 +178,34 @@ class ToolbarExtension implements DocumentRegistry.IWidgetExtension<NotebookPane
    }
 
 }
-
 */
+
 
 /**
 * Activate the APOD widget extension.
 */
 async function activate(app: JupyterFrontEnd, notebook: Notebook, notebookmodel: INotebookModel, docManager: IDocumentManager, notebookTracker: INotebookTracker, panel: NotebookPanel, palette: ICommandPalette, restorer: ILayoutRestorer | null, launcher: ILauncher) {
+
+    console.log(notebookTracker)
   console.log('JupyterLab extension jupyterlab_apod is activated!');
 
 
-  //const toolbarButton = new ToolbarExtension();
-  //toolbarButton.addItem()
+ // const toolbarButton = new ToolbarExtension();
+  //toolbarButton.createNew(nbPanel, notebookTracker, notebookmodel)
   //app.docRegistry.addWidgetExtension('Notebook', toolbarButton);
 
+/*
+  const getSessionCommand = 'marble:command';
+      commands.addCommand(getSessionCommand,{
+      label: 'Get Session',
+      caption: 'Get Session',
+      execute:() => {
+          //const toolbarButton = new ToolbarExtension();
+          //app.docRegistry.addWidgetExtension('Notebook', toolbarButton);
+      }
 
+
+  })*/
 
 
 /*
@@ -177,12 +218,14 @@ async function activate(app: JupyterFrontEnd, notebook: Notebook, notebookmodel:
 
     */
 
-    const services = app.serviceManager
-    await services.ready;
-    const kernelspecs = services.kernelspecs;
+    //const services = app.serviceManager
+    //await services.ready;
+    //const kernelspecs = services.kernelspecs;
     // Note: add null handling - should not use ! in production
-    const kernels = Object.keys(kernelspecs.specs!.kernelspecs!);
+    //const kernels = Object.keys(kernelspecs.specs!.kernelspecs!);
 
+
+/*
     const result = await app.commands.execute(
             'docmanager:new-untitled',
     { path: '.', type:'notebook' }
@@ -196,8 +239,24 @@ async function activate(app: JupyterFrontEnd, notebook: Notebook, notebookmodel:
           name: kernels[0]
         }}
     );
+    */
 
-    const newNotebookContent = {
+
+    const nbPanel: NotebookPanel = await app.commands.execute(
+    'notebook:create-new',
+    { kernelName: 'python3', activate: true }
+    );
+
+    console.log("created notebook");
+    console.log(nbPanel);
+
+console.log('notebookTracker.currentWidget')
+console.log(notebookTracker.activeCell)
+
+
+/*
+
+    const cellContentJSON = {
         cells: [
             {
             cell_type: 'code',
@@ -209,26 +268,109 @@ async function activate(app: JupyterFrontEnd, notebook: Notebook, notebookmodel:
             },
         ]
     }
+*/
 
+
+
+
+
+
+   // const cellContent = cellContentJSON as INotebookContent
+/*
     const newNotebookModel = new NotebookModel();
-    newNotebookModel.fromJSON(newNotebookContent)
+     newNotebookModel.fromJSON(cellContent) as sessioniCellContent
 
-    const newNotebook = result.content;
-    NotebookActions.insertBelow(newNotebook);
-        const activeCell = newNotebook.activeCell;
-        activeCell!.model.sharedModel.setSource('my content')
+    nbPanel.content.model = newNotebookModel
+    */
+
+    //const currentNotebook = notebookTracker.currentWidget;
+   // const newNotebookContent = nbPanel.content;
+   // console.log("newNotebookontent");
+   // console.log(newNotebookContent)
+
+    const newNotebookModelContent = nbPanel.content;
+        console.log("newNotebookontent");
+    console.log(newNotebookModelContent)
+
+        const newNotebookModelModel = nbPanel.model;
+        console.log("newNotebookModelModel");
+    console.log(newNotebookModelModel)
+/*
+    const codeCellContent = {
+        cell_type: 'code',
+    source: ['from marble_client import MarbleClient', 'client = MarbleClient()'],
+    trusted: true
+}
+*/
+/*
+const iCodeCellOptions = {
+        model: ICodeCellModel
+}*/
 
 
 /*
-const current = notebookTracker.currentWidget;
+const codeCell = newNotebookModelContent.contentFactory.createCodeCell({
+cell:{
+    cell_type: 'code',
+    metadata: {},
+    source: ['some code line 1', 'some code line 2'],
+    trusted: true
+}
 
-       const newNotebook = current!.content;
-        NotebookActions.insertBelow(newNotebook);
-        const activeCell = newNotebook.activeCell;
-        activeCell!.model.sharedModel.setSource('my content')
-
-
+})
 */
+
+     //const newNotebookCodeCell = notebook.contentFactory.createCodeCell(codeCellContent)
+
+
+
+   // const newCell = newNotebookContent.contentFactory.createCodeCell(codeCell)
+
+    //const newNotebookModel = nbPanel.model;
+
+   // newNotebookContent.activeCellIndex = 0;
+
+
+
+    NotebookActions.insertBelow(newNotebookModelContent);
+
+    console.log("notebook after adding cell")
+    console.log(newNotebookModelContent)
+
+    newNotebookModelContent.activeCell!.model.sharedModel.setSource('test')
+        console.log("active cell")
+    console.log(newNotebookModelContent.activeCell)
+   // const cellList = newNotebookModelContent.model?.cells
+        //cellList.insert(cells.length, [codeCellContent])
+   // newNotebookModelModel!.sharedModel.insertCells(1, [codeCellContent])
+
+
+
+    //NotebookActions.insertBelow(newNotebookContent);
+    //newNotebookContent.activeCell!.model.sharedModel.setSource('my content')
+   // console.log("newNotebookontent setSource");
+   // console.log(newNotebookContent)
+    //const activeCell = newNotebookContent.activeCell;
+   // console.log("activeCell");
+   // console.log(activeCell)
+   // activeCell!.model.sharedModel.setSource('my content')
+
+/*
+    this._tracker.currentWidget?.model?.contentFactory.createCodeCell({
+        cell: { cell_type: 'code', source: [ `print(\'hello\')`, ], metadata: {}, }
+    })
+
+    */
+/*
+     const cell = this._notebookPanel.content.model.contentFactory.createCell(
+      this._notebookPanel.content.notebookConfig.defaultCell,
+      {}
+    );
+
+    this._notebookPanel.content.model.cells.insert(0, cell);
+*/
+
+
 
 
          // Define a widget creator function
