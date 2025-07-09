@@ -36,3 +36,22 @@ commands, you can look at that [list](https://jupyterlab.readthedocs.io/en/lates
 
 This example uses a command to display the widget. Have a look a the
 [commands example](../commands/README.md) for more information about it.
+
+
+## How to run
+
+```sh
+python3 -m venv venv
+. venv/bin/activate
+cd toolbar-button
+
+## do this once
+touch yarn.lock
+python -m pip install -e .
+python -m pip install jupyter
+jupyter labextension develop . --overwrite
+
+# do this every time you change the code
+jlpm run build
+jupyter lab
+```
