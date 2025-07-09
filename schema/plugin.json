@@ -1,0 +1,10 @@
+{
+  "jupyter.lab.toolbars": {
+    "Notebook": [
+      {
+        "name": "jlab-examples-command",
+        "command": "jlab-examples:command"
+      }
+    ]
+  }
+}
