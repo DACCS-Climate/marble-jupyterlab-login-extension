@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.3.8
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: test@test.com
+author_name: Alexander Yu
+has_binder: true
+has_settings: false
+kind: frontend
+labextension_name: jupyterlab_marble
+project_short_description: A JupyterLab extension that allows a user access to a marble
+    node or allowthem to log in.
+python_name: jupyterlab_marble
+repository: https://github.com/DACCS-Climate/marble-jupyterlab-login-extension
+test: true
+
