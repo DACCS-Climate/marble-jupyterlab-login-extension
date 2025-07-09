@@ -1,10 +1,10 @@
 {
-  "jupyter.lab.toolbars": {
-    "Notebook": [
-      {
-        "name": "jlab-examples-command",
-        "command": "jlab-examples:command"
-      }
-    ]
-  }
+"jupyter.lab.toolbars": {
+  "Notebook": [
+    {
+      "name": "clear-all-outputs",
+      "command": "notebook:clear-all-cell-outputs"
+    }
+  ]
+}
 }
