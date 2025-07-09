@@ -1,0 +1,21 @@
+.DS_Store
+*.bundle.*
+lib/
+node_modules/
+*.egg-info/
+.ipynb_checkpoints
+*.tsbuildinfo
+__pycache__
+.yarn/
+
+# Ensure embedme does not run ont node_modules README.md files.
+**/node_modules/**/README.md
+
+static
+labextension
+**/test-results/
+_version.py
+
+.jupyter_ystore.db
+yarn.lock
+!**/ui-tests/yarn.lock

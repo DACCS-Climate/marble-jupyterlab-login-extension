@@ -1,0 +1,15 @@
+{
+  "jupyter.lab.toolbars": {
+    "Notebook": [
+      {
+        "name": "marble-session-cell",
+        "command": "birdhouse:marble-session-cell"
+      }
+    ]
+  },
+  "title": "@jupyterlab-examples/toolbar-button",
+  "description": "@jupyterlab-examples/toolbar-button settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}
