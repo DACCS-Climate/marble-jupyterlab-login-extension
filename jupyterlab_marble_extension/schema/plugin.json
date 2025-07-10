@@ -4,7 +4,7 @@
   "Notebook": [
     {
       "name": "jlab-examples-command",
-      "command": "jlab-examples:command"
+      "command": "jupyterlab-marble-extension:command"
     }
   ]
 },
