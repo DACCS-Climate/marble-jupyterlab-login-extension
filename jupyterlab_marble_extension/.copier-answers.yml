@@ -2,14 +2,14 @@
 _commit: v4.3.8
 _src_path: https://github.com/jupyterlab/extension-template
 author_email: test@test.com
-author_name: DACCS
+author_name: daccs
 has_binder: true
 has_settings: true
 kind: frontend
 labextension_name: jupyterlab-marble-extension
-project_short_description: A JupyterLab extension to get the session from a Marble
-    node.
+project_short_description: A JupyterLab extension that gets the session of the marble
+    node
 python_name: jupyterlab_marble_extension
-repository: https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/tree/marble-extension
+repository: https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/
 test: true
 

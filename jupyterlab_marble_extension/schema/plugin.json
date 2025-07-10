@@ -1,4 +1,13 @@
 {
+
+"jupyter.lab.toolbars": {
+  "Notebook": [
+    {
+      "name": "jlab-examples-command",
+      "command": "jlab-examples:command"
+    }
+  ]
+},
   "jupyter.lab.shortcuts": [],
   "title": "jupyterlab-marble-extension",
   "description": "jupyterlab-marble-extension settings.",

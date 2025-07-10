@@ -1,19 +1,19 @@
 {
     "name": "jupyterlab-marble-extension",
     "version": "0.1.0",
-    "description": "A JupyterLab extension to get the session from a Marble node.",
+    "description": "A JupyterLab extension that gets the session of the marble node",
     "keywords": [
         "jupyter",
         "jupyterlab",
         "jupyterlab-extension"
     ],
-    "homepage": "https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/tree/marble-extension",
+    "homepage": "https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/",
     "bugs": {
-        "url": "https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/tree/marble-extension/issues"
+        "url": "https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/issues"
     },
     "license": "BSD-3-Clause",
     "author": {
-        "name": "DACCS",
+        "name": "daccs",
         "email": "test@test.com"
     },
     "files": [
@@ -27,7 +27,7 @@
     "style": "style/index.css",
     "repository": {
         "type": "git",
-        "url": "https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/tree/marble-extension.git"
+        "url": "https://github.com/DACCS-Climate/marble-jupyterlab-login-extension.git"
     },
     "scripts": {
         "build": "jlpm build:lib && jlpm build:labextension:dev",
