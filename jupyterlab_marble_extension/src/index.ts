@@ -61,31 +61,36 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n for node in nodes:' +
             '\n     nodeIDList.append(nodes[node].id)' +
             '\n ' +
-            '\n nodeDropdown = ipywidgets.Dropdown(options=nodeIDList, description="Select the node you want to log in to:")' +
+            '\n nodeDropdownLabelWidget = ipywidgets.Label(value="Select the node you want to log in to:", style={"font_family":"Helvetica Neue","font_size":"16px"})' +
+            '\n nodeDropdownWidget = ipywidgets.Dropdown(options=nodeIDList, style={"description_width":"initial"}) ' +
+            '\n nodeDropdownBoxWidget = ipywidgets.VBox([nodeDropdownLabelWidget, nodeDropdownWidget])' +
             '\n nodeDropdownOutput = ipywidgets.Output()' +
-            '\n usernameWidget = ipywidgets.Text( placeholder="",  description="Enter your username:", disabled=False)   ' +
+            '\n ' +
+            '\n usernameLabelWidget = ipywidgets.Label(value="Enter your username:", style={"font_family":"Helvetica Neue","font_size":"16px"})' +
+            '\n usernameWidget = ipywidgets.Text( placeholder="", style={"description_width":"initial"}, disabled=False) ' +
+            '\n usernameBoxWidget = ipywidgets.VBox([usernameLabelWidget, usernameWidget])' +
             '\n usernameOutput = ipywidgets.Output()' +
-            '\n passwordWidget = ipywidgets.Password(placeholder="", description="Enter your password:", disabled=False)' +
+            '\n ' +
+            '\n passwordLabelWidget = ipywidgets.Label(value="Enter your password:", style={"font_family":"Helvetica Neue","font_size":"16px"})' +
+            '\n passwordWidget =  ipywidgets.Password(placeholder="", style={"description_width":"initial"}, disabled=False)' +
+            '\n passwordBoxWidget = ipywidgets.VBox([passwordLabelWidget, passwordWidget])' +
             '\n passwordOutput = ipywidgets.Output()' +
             '\n ' +
-            '\n submitButton = ipywidgets.Button(description="Submit", disabled=False,button_style="", tooltip="Submit", icon="" )' +
+            '\n submitButton = ipywidgets.Button(description="Submit", disabled=False,button_style="", tooltip="Submit", icon=""' +
+            ', layout={"border":"1px solid black", "border-radius":"50%"} )' +
             '\n ' +
-
-            '\n file = open("../images/green_checkmark.png", "rb")' +
-            '\n image = file.read()' +
-            '\n loginSuccessIconWidget = ipywidgets.Image(value=image, format="png", width=32, height=32)' +
-            '\n loginSuccessBoxWidget = ipywidgets.Box[ipywidgets.Label("Login Successful"), loginSuccessIconWidget, ]' +
-            '\n @nodeDropdownOutput.capture()' +
+            '\n loginSuccessLabelWidget = ipywidgets.HBox([ipywidgets.Label("Login Successful", style={"text_color":"green", "font_size":"16px"})]) ' +
+            '\n loginSuccessLabelOutputWidget = ipywidgets.Output()' +
+            '\n loginFailedLabelWidget = ipywidgets.HBox([ipywidgets.Label("Error Logging In", style={"text_color":"red", "font_size":"16px"})])' +
+            '\n ' +
             '\n def nodeDropdownChoice(change):' +
             '\n     with nodeDropdownOutput:' +
             '\n         payload["selectedNode"] = change["new"]' +
             '\n ' +
-            '\n @usernameOutput.capture()' +
             '\n def getUsernameInput(change):' +
             '\n     with usernameOutput:' +
             '\n         payload["credentials"]["user_name"] =  change["new"];' +
             '\n ' +
-            '\n @passwordOutput.capture()' +
             '\n def getPasswordInput(change):' +
             '\n     with passwordOutput:' +
             '\n         payload["credentials"]["password"] =  change["new"];' +
@@ -93,21 +98,23 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n def submit(arg1):' +
             '\n     url = MarbleClient()[payload["selectedNode"]].url + "/magpie/signin" ' +
             '\n     response = requests.post(url, headers={"Content-Type": "application/json"}, json=payload["credentials"])' +
-            //'\n     print(response)' +
             '\n     if("200" in str(response)):' +
             '\n         passwordOutput.clear_output()' +
-            '\n         display(loginSuccessBoxWidget)' +
-            '\n         #print("Logged into " + payload["selectedNode"] + " successfully.")' +
+            '\n         with loginSuccessLabelOutputWidget:' +
+            '\n             display(loginSuccessLabelWidget)' +
+            '\n         print("Logged into " + payload["selectedNode"] + " successfully.")' +
             '\n     else:' +
+            '\n         passwordOutput.clear_output()' +
+            '\n         display(loginFailedlabelWidget)' +
             '\n         print("Error logging in")' +
             '\n ' +
-            '\n display(nodeDropdown, nodeDropdownOutput)' +
-            '\n nodeDropdown.observe(nodeDropdownChoice, names="value")' +
+            '\n display(nodeDropdownBoxWidget, nodeDropdownOutput)' +
+            '\n nodeDropdownWidget.observe(nodeDropdownChoice, names="value")' +
             '\n ' +
-            '\n display(usernameWidget, usernameOutput)' +
+            '\n display(usernameBoxWidget, usernameOutput)' +
             '\n usernameWidget.observe(getUsernameInput, names="value")' +
             '\n ' +
-            '\n display(passwordWidget, passwordOutput)' +
+            '\n display(passwordBoxWidget, passwordOutput)' +
             '\n passwordWidget.observe(getPasswordInput, names="value")' +
             '\n ' +
             '\n display(submitButton)' +
@@ -133,16 +140,4 @@ const plugin: JupyterFrontEndPlugin<void> = {
 };
 
 
-
-//Metadata form example
-// src/index.ts#L17-L23
-
-const simple: JupyterFrontEndPlugin<void> = {
-  id: '@jupyterlab-examples/metadata-form:simple',
-  autoStart: true,
-  activate: (app: JupyterFrontEnd) => {
-    console.log('Simple metadata-form example activated');
-  }
-};
-
-export default [plugin,simple];
+export default plugin;
