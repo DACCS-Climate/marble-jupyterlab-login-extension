@@ -60,30 +60,33 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n for node in nodes:' +
             '\n     nodeIDList.append(nodes[node].id)' +
             '\n ' +
-            '\n nodeDropdownLabelWidget = ipywidgets.Label(value="Select the node you want to log in to:", style={"font_family":"Helvetica Neue","font_size":"16px", "text_color":"RoyalBlue"})' +
+            '\n nodeDropdownLabelWidget = ipywidgets.Label(value="Select the node you want to log in to:", style={"font_family":"Helvetica Neue","font_size":"16px", "text_color":"#304FFE"})' +
             '\n nodeDropdownWidget = ipywidgets.Dropdown(options=nodeIDList, style={"description_width":"initial"}) ' +
             '\n nodeDropdownBoxWidget = ipywidgets.VBox([nodeDropdownLabelWidget, nodeDropdownWidget])' +
             '\n nodeDropdownOutput = ipywidgets.Output()' +
             '\n ' +
-            '\n usernameLabelWidget = ipywidgets.Label(value="Enter your username:", style={"font_family":"Helvetica Neue","font_size":"16px", "text_color":"RoyalBlue"})' +
+            '\n usernameLabelWidget = ipywidgets.Label(value="Enter your username:", style={"font_family":"Helvetica Neue, Helvetica","font_size":"16px", "text_color":"#304FFE"})' +
             '\n usernameWidget = ipywidgets.Text( placeholder="", style={"description_width":"initial"}, disabled=False) ' +
             '\n usernameBoxWidget = ipywidgets.VBox([usernameLabelWidget, usernameWidget])' +
             '\n usernameOutput = ipywidgets.Output()' +
             '\n ' +
-            '\n passwordLabelWidget = ipywidgets.Label(value="Enter your password:", style={"font_family":"Helvetica Neue","font_size":"16px", "text_color":"RoyalBlue"})' +
+            '\n passwordLabelWidget = ipywidgets.Label(value="Enter your password:", style={"font_family":"Helvetica Neue, Helvetica","font_size":"16px", "text_color":"#304FFE"})' +
             '\n passwordWidget =  ipywidgets.Password(placeholder="", style={"description_width":"initial"}, disabled=False)' +
             '\n passwordBoxWidget = ipywidgets.VBox([passwordLabelWidget, passwordWidget])' +
             '\n passwordOutput = ipywidgets.Output()' +
             '\n ' +
             '\n submitButton = ipywidgets.Button(description="Submit", disabled=False,button_style="", tooltip="Submit", icon=""' +
-            ', style={"font_family":"Helvetica Neue","font_size":"16px", "button_color":"RoyalBlue", "text_color":"white"} )' +
+            ', style={"font_family":"Helvetica Neue","font_size":"16px", "button_color":"#304FFE", "text_color":"white"} )' +
             '\n ' +
-            '\n loginSuccessLabelWidget = ipywidgets.HBox([ipywidgets.Label("Login Successful", style={"text_color":"green", "font_size":"16px"})]) ' +
             '\n loginSuccessLabelOutputWidget = ipywidgets.Output()' +
-            '\n loginFailedLabelWidget = ipywidgets.HBox([ipywidgets.Label("Error Logging In", style={"text_color":"red", "font_size":"16px"})])' +
+            '\n loginFailedLabelOutputWidget = ipywidgets.Output()' +
+            '\n chooseAnotherNodeLabelOutputWidget = ipywidgets.Output()' +
             '\n ' +
             '\n def nodeDropdownChoice(change):' +
             '\n     with nodeDropdownOutput:' +
+            '\n         loginSuccessLabelOutputWidget.clear_output()' +
+            '\n         loginFailedLabelOutputWidget.clear_output()' +
+            '\n         chooseAnotherNodeLabelOutputWidget.clear_output()' +
             '\n         payload["selectedNode"] = change["new"]' +
             '\n ' +
             '\n def getUsernameInput(change):' +
@@ -95,17 +98,35 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n         payload["credentials"]["password"] =  change["new"];' +
             '\n ' +
             '\n def submit(arg1):' +
-            '\n     url = MarbleClient()[payload["selectedNode"]].url + "/magpie/signin" ' +
-            '\n     response = requests.post(url, headers={"Content-Type": "application/json"}, json=payload["credentials"])' +
-            '\n     if("200" in str(response)):' +
-            '\n         passwordOutput.clear_output()' +
-            '\n         with loginSuccessLabelOutputWidget:' +
-            '\n             display(loginSuccessLabelWidget)' +
-            '\n         print("Logged into " + payload["selectedNode"] + " successfully.")' +
+            '\n     userNode = "" ' +
+            '\n     response = ""' +
+            '\n     chooseAnotherNodeLabelWidget = ipywidgets.HBox([ipywidgets.Label(value="Invalid node name selected.  Please choose another node name.", style={"text_color":"#304FFE", "font_size":"16px"})]) ' +
+            '\n     loginSuccessLabelWidget = ipywidgets.HBox([ipywidgets.Label(value="Logged into " + userNode + " successfully.", style={"text_color":"green", "font_size":"16px"})]) ' +
+            '\n     loginFailedLabelWidget = ipywidgets.HBox([ipywidgets.Label(value="Error Logging In", style={"text_color":"red", "font_size":"16px"})])' +
+            '\n     print(payload)' +
+            '\n ' +
+            '\n     if("selectedNode" in payload and payload["selectedNode"] != "Node ID"):' +
+            '\n         userNode = payload["selectedNode"]' +
+            '\n         url = MarbleClient()[userNode].url + "/magpie/signin" ' +
+            '\n         response = requests.post(url, headers={"Content-Type": "application/json"}, json=payload["credentials"])' +
+            '\n         print(response)' +
+            '\n         if("200" in str(response)):' +
+            '\n             passwordOutput.clear_output()' +
+            '\n             with loginSuccessLabelOutputWidget:' +
+            '\n                 loginFailedLabelOutputWidget.clear_output()' +
+            '\n                 chooseAnotherNodeLabelOutputWidget.clear_output()' +
+            '\n                 display(loginSuccessLabelWidget)' +
+            '\n         else:' +
+            '\n             passwordOutput.clear_output()' +
+            '\n             with loginFailedLabelOutputWidget:' +
+            '\n                 loginSuccessLabelOutputWidget.clear_output()' +
+            '\n                 chooseAnotherNodeLabelOutputWidget.clear_output()' +
+            '\n                 display(loginFailedLabelWidget)' +
             '\n     else:' +
-            '\n         passwordOutput.clear_output()' +
-            '\n         display(loginFailedlabelWidget)' +
-            '\n         print("Error logging in")' +
+            '\n         with chooseAnotherNodeLabelOutputWidget:' +
+            '\n             loginSuccessLabelOutputWidget.clear_output()' +
+            '\n             loginFailedLabelOutputWidget.clear_output()' +
+            '\n             display(chooseAnotherNodeLabelWidget)' +
             '\n ' +
             '\n display(nodeDropdownBoxWidget, nodeDropdownOutput)' +
             '\n nodeDropdownWidget.observe(nodeDropdownChoice, names="value")' +
@@ -117,7 +138,10 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n passwordWidget.observe(getPasswordInput, names="value")' +
             '\n ' +
             '\n display(submitButton)' +
-            '\n submitButton.on_click(submit)'
+            '\n submitButton.on_click(submit)' +
+            '\n display(chooseAnotherNodeLabelOutputWidget)' +
+            '\n display(loginSuccessLabelOutputWidget)' +
+            '\n display(loginFailedLabelOutputWidget)'
             )
       }
 });
@@ -130,9 +154,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
       );
 
     });
-
-
-
 
 
   }
