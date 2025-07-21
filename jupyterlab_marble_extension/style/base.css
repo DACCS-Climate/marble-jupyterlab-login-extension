@@ -3,35 +3,3 @@
 
     https://jupyterlab.readthedocs.io/en/stable/developer/css.html
 */
-:root{
-    /*Colours*/
-     --primary: #304FFE;
-
-    /*Fonts*/
-    --main-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --med-font-weight: 500;
-    --line-height-normal: normal;
-}
-
-pre.jp-Stdin-prompt{
-    display: flex;
-    flex-direction: column;
-    color: var(--primary);
-    font-family: var(--main-font-family) !important;
-    font-weight: var(--med-font-weight) !important;
-    font-size: 16px !important;
-    letter-spacing: 0.03px !important;
-    line-height: var(--line-height-normal) !important;
-}
-
-.jp-Stdin-input{
-    border: 1px !important;
-    border-color: black !important;
-    border-style: solid !important;
-    border-radius: 5px !important;
-    margin: unset;
-}
-
-.jp-Stdin-input:focus{
-    outline: none !important;
-}
