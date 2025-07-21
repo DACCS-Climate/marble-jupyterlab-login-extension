@@ -103,13 +103,11 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n     chooseAnotherNodeLabelWidget = ipywidgets.HBox([ipywidgets.Label(value="Invalid node name selected.  Please choose another node name.", style={"text_color":"#304FFE", "font_size":"16px"})]) ' +
             '\n     loginSuccessLabelWidget = ipywidgets.HBox([ipywidgets.Label(value="Logged into " + userNode + " successfully.", style={"text_color":"green", "font_size":"16px"})]) ' +
             '\n     loginFailedLabelWidget = ipywidgets.HBox([ipywidgets.Label(value="Error Logging In", style={"text_color":"red", "font_size":"16px"})])' +
-            '\n     print(payload)' +
             '\n ' +
             '\n     if("selectedNode" in payload and payload["selectedNode"] != "Node ID"):' +
             '\n         userNode = payload["selectedNode"]' +
             '\n         url = MarbleClient()[userNode].url + "/magpie/signin" ' +
             '\n         response = requests.post(url, headers={"Content-Type": "application/json"}, json=payload["credentials"])' +
-            '\n         print(response)' +
             '\n         if("200" in str(response)):' +
             '\n             passwordOutput.clear_output()' +
             '\n             with loginSuccessLabelOutputWidget:' +
