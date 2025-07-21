@@ -35,7 +35,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
 
         activeCell!.model.sharedModel.setSource('import sys' +
             '\nimport requests' +
-            '\nimport getpass' +
             '\nimport ipywidgets' +
             '\nfrom IPython.display import display ' +
             '\n ' +
@@ -61,23 +60,23 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n for node in nodes:' +
             '\n     nodeIDList.append(nodes[node].id)' +
             '\n ' +
-            '\n nodeDropdownLabelWidget = ipywidgets.Label(value="Select the node you want to log in to:", style={"font_family":"Helvetica Neue","font_size":"16px"})' +
+            '\n nodeDropdownLabelWidget = ipywidgets.Label(value="Select the node you want to log in to:", style={"font_family":"Helvetica Neue","font_size":"16px", "text_color":"RoyalBlue"})' +
             '\n nodeDropdownWidget = ipywidgets.Dropdown(options=nodeIDList, style={"description_width":"initial"}) ' +
             '\n nodeDropdownBoxWidget = ipywidgets.VBox([nodeDropdownLabelWidget, nodeDropdownWidget])' +
             '\n nodeDropdownOutput = ipywidgets.Output()' +
             '\n ' +
-            '\n usernameLabelWidget = ipywidgets.Label(value="Enter your username:", style={"font_family":"Helvetica Neue","font_size":"16px"})' +
+            '\n usernameLabelWidget = ipywidgets.Label(value="Enter your username:", style={"font_family":"Helvetica Neue","font_size":"16px", "text_color":"RoyalBlue"})' +
             '\n usernameWidget = ipywidgets.Text( placeholder="", style={"description_width":"initial"}, disabled=False) ' +
             '\n usernameBoxWidget = ipywidgets.VBox([usernameLabelWidget, usernameWidget])' +
             '\n usernameOutput = ipywidgets.Output()' +
             '\n ' +
-            '\n passwordLabelWidget = ipywidgets.Label(value="Enter your password:", style={"font_family":"Helvetica Neue","font_size":"16px"})' +
+            '\n passwordLabelWidget = ipywidgets.Label(value="Enter your password:", style={"font_family":"Helvetica Neue","font_size":"16px", "text_color":"RoyalBlue"})' +
             '\n passwordWidget =  ipywidgets.Password(placeholder="", style={"description_width":"initial"}, disabled=False)' +
             '\n passwordBoxWidget = ipywidgets.VBox([passwordLabelWidget, passwordWidget])' +
             '\n passwordOutput = ipywidgets.Output()' +
             '\n ' +
             '\n submitButton = ipywidgets.Button(description="Submit", disabled=False,button_style="", tooltip="Submit", icon=""' +
-            ', layout={"border":"1px solid black", "border-radius":"50%"} )' +
+            ', style={"font_family":"Helvetica Neue","font_size":"16px", "button_color":"RoyalBlue", "text_color":"white"} )' +
             '\n ' +
             '\n loginSuccessLabelWidget = ipywidgets.HBox([ipywidgets.Label("Login Successful", style={"text_color":"green", "font_size":"16px"})]) ' +
             '\n loginSuccessLabelOutputWidget = ipywidgets.Output()' +
