@@ -1,4 +1,4 @@
-import { expect, test } from '@jupyterlab/galata';
+import { galata, expect, test } from '@jupyterlab/galata';
 
 /**
  * Don't load JupyterLab webpage before running the tests.
@@ -19,3 +19,9 @@ test('should emit an activation console message', async ({ page }) => {
     logs.filter(s => s === 'JupyterLab extension jupyterlab-marble-extension is activated!')
   ).toHaveLength(1);
 });
+
+test('should add a code cell at the top of the current notebook', async() =>{
+  await galata.notebook.addCell('code')
+  expect(await galata.notebook.getCellType(0).toBe('code'));
+
+})
