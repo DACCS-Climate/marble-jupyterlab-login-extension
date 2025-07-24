@@ -3,7 +3,7 @@
     "Notebook": [
       {
         "name": "marble-session-cell",
-        "command": "jupyterlab-marble-extension:command"
+        "command": "jupyterlab-marble-extension:marble_login"
       }
     ]
   },
