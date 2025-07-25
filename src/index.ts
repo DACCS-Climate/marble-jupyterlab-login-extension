@@ -157,14 +157,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
           '\n display(credential_error_output_widget)'
           )
       }
-});
-
-
-    // Call the command execution
-    commands.execute(command, { origin: 'init' }).catch(reason => {
-    console.error(
-        `An error occurred during the execution of jupyterlab-marble-extension:command.\n${reason}`
-      );
     });
   }
 };
