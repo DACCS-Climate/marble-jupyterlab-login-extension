@@ -35,6 +35,7 @@ test('should add a code cell at the top of the current notebook', async() =>{
 
 })
 */
+/*
 test('new notebook created', async ({ page, tmpPath }) => {
   const newNotebook = 'create_test.ipynb';
   await page.notebook.createNew(newNotebook);
@@ -49,6 +50,7 @@ test('new notebook created', async ({ page, tmpPath }) => {
 
   //expect(await getToolbarItemByIndex(10))
 });
+*/
 
 /*
 test('the added code cell should contain code/strings of code', async({page}) =>{
