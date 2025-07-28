@@ -7,9 +7,9 @@ has_binder: true
 has_settings: true
 kind: frontend
 labextension_name: jupyterlab-marble-extension
-project_short_description: A JupyterLab extension that gets the session of the marble
-    node
+project_short_description:
+  A JupyterLab extension that gets the session of the marble
+  node
 python_name: jupyterlab_marble_extension
 repository: https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/
 test: true
-

@@ -7,10 +7,10 @@
       }
     ]
   },
-    "jupyter.lab.shortcuts": [],
-    "title": "jupyterlab-marble-extension",
-    "description": "jupyterlab-marble-extension settings.",
-    "type": "object",
-    "properties": {},
-    "additionalProperties": false
+  "jupyter.lab.shortcuts": [],
+  "title": "jupyterlab-marble-extension",
+  "description": "jupyterlab-marble-extension settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
 }

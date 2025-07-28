@@ -3,7 +3,6 @@
 [![Github Actions Status](https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/workflows/Build/badge.svg)](https://github.com/DACCS-Climate/marble-jupyterlab-login-extension/actions/workflows/build.yml)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/DACCS-Climate/marble-jupyterlab-login-extension//main?urlpath=lab)
 
-
 A JupyterLab extension that gets the session of the marble node
 
 ## Requirements
