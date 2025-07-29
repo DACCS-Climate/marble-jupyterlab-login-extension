@@ -47,13 +47,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\nexcept ImportError as exc:' +
             '\n raise Exception("The marble_client package is required to run this cell. Please install it and run this code again.") from exc' +
             '\n ' +
-            '\nfrom marble_client import MarbleClient' +
             '\nfrom marble_client.exceptions import JupyterEnvironmentError' +
             '\n ' +
             '\nclient = MarbleClient()' +
             '\n ' +
             '\ntry:' +
-            '\n client_session = client.this_session()' +
+            '\n session = client.this_session()' +
             '\nexcept JupyterEnvironmentError:' +
             '\n ' +
             '\n session = requests.Session()' +
@@ -62,6 +61,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n payload = {"credentials":{"user_name":"", "password":""}}' +
             '\n nodes = client.nodes' +
             '\n ui_label_style = {"font_family":"Helvetica Neue","font_size":"16px", "text_color":"#304FFE"}' +
+            '\n button_style = {"font_family":"Helvetica Neue","font_size":"16px", "button_color":"#304FFE", "text_color":"white"}' +
             '\n input_field_style = {"description_width":"initial"}' +
             '\n login_success_style = {"font_family":"Helvetica Neue","font_size":"16px", "text_color":"green"}' +
             '\n error_style = {"font_family":"Helvetica Neue","font_size":"16px", "text_color":"red"}' +
@@ -82,15 +82,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n password_widget =  ipywidgets.Password(style=input_field_style)' +
             '\n password_box_widget = ipywidgets.VBox([password_label_widget, password_widget])' +
             '\n ' +
-            '\n submit_button = ipywidgets.Button(description="Submit", button_style="", tooltip="Submit", icon=""' +
-            ', style={"font_family":"Helvetica Neue","font_size":"16px", "button_color":"#304FFE", "text_color":"white"} )' +
+            '\n submit_button = ipywidgets.Button(description="Submit", tooltip="Submit"' +
+            ', style=button_style )' +
             '\n ' +
             '\n ui_message_output_widget = ipywidgets.Output()' +
             '\n ui_message_label_widget = ipywidgets.Label(value="", style=ui_label_style)' +
-            '\n ui_message_display_box_widget = ipywidgets.HBox([ui_message_label_widget])' +
-            '\n credential_error_output_widget = ipywidgets.Output()' +
             '\n credential_error_label_widget = ipywidgets.Label(value="", style=error_style)' +
-            '\n credential_error_display_box_widget = ipywidgets.HBox([credential_error_label_widget])' +
             '\n ' +
             '\n def node_dropdown_choice(change):' +
             '\n     payload["selected_node"] = change["new"]' +
@@ -106,41 +103,42 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n         user_node = payload["selected_node"]' +
             '\n         url = client[user_node].url + "/magpie/signin" ' +
             '\n         response = session.post(url, headers={"Content-Type": "application/json"}, json=payload["credentials"])' +
-            '\n         response_json = response.json()' +
             '\n ' +
-            '\n         if(response_json["code"] == 200):' +
+            '\n         if(response.status_code == 200):' +
+            '\n             if(response.json()):' +
+            '\n                 response_json = response.json()' +
+            '\n                 ui_message_label_widget.value = response_json["detail"]' +
+            '\n             else:' +
+            '\n                 ui_message_label_widget.value = response.reason' +
+            '\n ' +
             '\n             with ui_message_output_widget:' +
             '\n                 ui_message_output_widget.clear_output()' +
-            '\n                 credential_error_output_widget.clear_output()' +
-            '\n                 ui_message_label_widget.value = response_json["detail"]' +
             '\n                 ui_message_label_widget.style = login_success_style' +
-            '\n                 display(ui_message_display_box_widget)' +
+            '\n                 display(ui_message_label_widget)' +
             '\n         else:' +
             '\n             with ui_message_output_widget:' +
             '\n                 ui_message_output_widget.clear_output()' +
-            '\n                 credential_error_output_widget.clear_output()' +
-            '\n                 ui_message_label_widget.value = response_json["detail"]' +
             '\n                 ui_message_label_widget.style = error_style' +
-            '\n                 display(ui_message_display_box_widget)' +
+            '\n                 display(ui_message_label_widget)' +
             '\n     else:' +
             '\n         if("selected_node" not in payload or payload["selected_node"] == "Node ID"): ' +
             '\n             with ui_message_output_widget:' +
             '\n                 ui_message_output_widget.clear_output()' +
             '\n                 ui_message_label_widget.value = "Invalid node name selected.  Please choose another node name."' +
             '\n                 ui_message_label_widget.style = choose_another_node_style' +
-            '\n                 display(ui_message_display_box_widget)' +
+            '\n                 display(ui_message_label_widget)' +
             '\n         else:' +
             '\n             with ui_message_output_widget:' +
             '\n                 ui_message_output_widget.clear_output()' +
             '\n ' +
             '\n         if(payload["credentials"]["user_name"] == "" or payload["credentials"]["password"] == ""): ' +
-            '\n             with credential_error_output_widget:' +
-            '\n                 credential_error_output_widget.clear_output()' +
+            '\n             with ui_message_output_widget:' +
             '\n                 credential_error_label_widget.value = "Username or password cannot be empty"' +
-            '\n                 display(credential_error_display_box_widget)' +
+            '\n                 display(credential_error_label_widget)' +
             '\n         else:' +
             '\n             with ui_message_output_widget:' +
-            '\n                 credential_error_output_widget.clear_output()' +
+            '\n                 credential_error_label_widget.value = ""' +
+            '\n                 display(credential_error_label_widget)' +
             '\n ' +
             '\n display(node_dropdown_box_widget)' +
             '\n node_dropdown_widget.observe(node_dropdown_choice, names="value")' +
@@ -153,8 +151,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             '\n ' +
             '\n display(submit_button)' +
             '\n submit_button.on_click(submit)' +
-            '\n display(ui_message_output_widget)' +
-            '\n display(credential_error_output_widget)'
+            '\n display(ui_message_output_widget)'
         );
       }
     });
